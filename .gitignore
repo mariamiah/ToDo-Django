@@ -1,0 +1,18 @@
+# ignore compiled python files
+*.pyc
+__pycache__/**
+todo/src/todo/__pycache__
+.vscode
+.coverage
+coverage.xml
+*.xml
+
+# Ignore database files
+*.sqlite3
+
+#  Ignore the virtual environment
+venv
+
+# Ignore secret files
+.env
+todo/src/todo/.env
