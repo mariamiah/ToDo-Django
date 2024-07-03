@@ -1,0 +1,16 @@
+    name: CodeQL Analysis
+    on:
+      push:
+        branches:
+        - main
+        - master
+        - chore/codeql
+      workflow_dispatch:
+    jobs:
+      analyze_security:
+        uses: kynetixx/codeql-module/.github/workflows/codeql-analysis.yml@main
+        with:
+          severity_threshold: 'high'
+          score_threshold: 5
+        secrets:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
