@@ -5,6 +5,7 @@
         - main
         - master
         - develop
+        - test/update  
       workflow_dispatch:
     jobs:
       analyze_security:
