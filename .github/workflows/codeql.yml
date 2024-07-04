@@ -10,3 +10,4 @@
     jobs:
       analyze_security:
         uses: Kynetixx/codeql-module/.github/workflows/codeql-analysis.yml@main
+
