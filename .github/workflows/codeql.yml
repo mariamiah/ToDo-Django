@@ -14,3 +14,4 @@
           score_threshold: 5
         secrets:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
