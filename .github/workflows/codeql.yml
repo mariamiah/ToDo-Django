@@ -4,7 +4,7 @@
         branches:
         - main
         - master
-        - chore/codeql
+        - develop
       workflow_dispatch:
     jobs:
       analyze_security:
