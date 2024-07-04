@@ -13,3 +13,4 @@
         with:
           severity_threshold: 'high'
           score_threshold: 5
+
