@@ -1,12 +1,33 @@
-    name: CodeQL Analysis
-    on:
-      push:
-        branches:
-        - main
-        - master
-        - develop
-        - test/update  
-      workflow_dispatch:
-    jobs:
-      analyze_security:
-        uses: Kynetixx/codeql-module/.github/workflows/codeql-analysis.yml@main
+name: CodeQL Analysis
+on:
+  push:
+    branches:
+    - main
+    - master
+    - develop
+    - test/update  
+  workflow_dispatch:
+jobs:
+  analyze_security:
+    uses: Kynetixx/codeql-module/.github/workflows/codeql-analysis.yml@main
+
+  check-vulnerabilities:
+    needs: codeql-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Vulnerability Threshold
+        run: |
+          CRITICAL_THRESHOLD=1
+          HIGH_THRESHOLD=5
+          critical_vulnerabilities="${{ needs.codeql.outputs.critical_vulnerabilities }}"
+          high_vulnerabilities="${{ needs.codeql.outputs.high_vulnerabilities }}"
+
+          echo "Critical vulnerabilities: $critical_vulnerabilities"
+          echo "High vulnerabilities: $high_vulnerabilities"
+
+          if [ "$critical_vulnerabilities" -ge "$CRITICAL_THRESHOLD" ] || [ "$high_vulnerabilities" -ge "$HIGH_THRESHOLD" ]; then
+            echo "Too many vulnerabilities detected!"
+            exit 1
+          else
+            echo "Vulnerability count is within acceptable limits."
+          fi
