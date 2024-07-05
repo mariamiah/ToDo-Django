@@ -19,8 +19,8 @@ jobs:
         run: |
           CRITICAL_THRESHOLD=1
           HIGH_THRESHOLD=5
-          critical_vulnerabilities="${{ needs.codeql.outputs.critical_vulnerabilities }}"
-          high_vulnerabilities="${{ needs.codeql.outputs.high_vulnerabilities }}"
+          critical_vulnerabilities=${{ needs.codeql-analysis.outputs.critical_vulnerabilities }}
+          high_vulnerabilities=${{ needs.codeql-analysis.outputs.high_vulnerabilities }}
 
           echo "Critical vulnerabilities: $critical_vulnerabilities"
           echo "High vulnerabilities: $high_vulnerabilities"
