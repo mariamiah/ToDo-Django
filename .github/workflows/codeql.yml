@@ -31,3 +31,4 @@ jobs:
           else
             echo "Vulnerability count is within acceptable limits."
           fi
+
