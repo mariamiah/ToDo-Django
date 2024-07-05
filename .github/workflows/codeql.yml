@@ -8,7 +8,7 @@ on:
     - test/update  
   workflow_dispatch:
 jobs:
-  analyze_security:
+  codeql-analysis:
     uses: Kynetixx/codeql-module/.github/workflows/codeql-analysis.yml@main
 
   check-vulnerabilities:
