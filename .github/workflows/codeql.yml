@@ -20,12 +20,12 @@ jobs:
           echo "Final vulnerability score: ${{ needs.codeql-analysis.outputs.score }}"
 
       - name: Check Score and Block Pipeline
-        if: needs.call-codeql-analysis.outputs.score < 75
+        if: needs.codeql-analysis.outputs.score < 75
         run: |
           echo "Vulnerability score is too low: ${{ needs.call-codeql-analysis.outputs.score }}. Blocking pipeline."
           exit 1  # This will cause the pipeline to fail
 
       - name: Proceed with Deployment
-        if: needs.call-codeql-analysis.outputs.score >= 75
+        if: needs.codeql-analysis.outputs.score >= 75
         run: |
           echo "Vulnerability score is acceptable: ${{ needs.call-codeql-analysis.outputs.score }}. Proceeding with deployment."
