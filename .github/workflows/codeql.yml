@@ -17,7 +17,8 @@ jobs:
     steps:
       - name: Check Vulnerability Score
         id: get-score
-        run: echo "Final vulnerability score: ${{ needs.codeql-analysis.outputs.score }}"
+        run: |
+          echo "Final vulnerability score: ${{ needs.codeql-analysis.outputs.score }}"
 
       - name: Check Score and Block Pipeline
         if: needs.call-codeql-analysis.outputs.score < 75
