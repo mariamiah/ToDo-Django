@@ -15,20 +15,17 @@ jobs:
     needs: codeql-analysis
     runs-on: ubuntu-latest
     steps:
-      - name: Check Vulnerability Threshold
+      - name: Check Vulnerability Score
+        id: get-score
+        run: echo "Final vulnerability score: ${{ needs.call-codeql-analysis.outputs.score }}"
+
+      - name: Check Score and Block Pipeline
+        if: needs.call-codeql-analysis.outputs.score < 75
         run: |
-          CRITICAL_THRESHOLD=1
-          HIGH_THRESHOLD=5
-          critical_vulnerabilities=${{ needs.codeql-analysis.outputs.critical_vulnerabilities }}
-          high_vulnerabilities=${{ needs.codeql-analysis.outputs.high_vulnerabilities }}
+          echo "Vulnerability score is too low: ${{ needs.call-codeql-analysis.outputs.score }}. Blocking pipeline."
+          exit 1  # This will cause the pipeline to fail
 
-          echo "Critical vulnerabilities: $critical_vulnerabilities"
-          echo "High vulnerabilities: $high_vulnerabilities"
-
-          if [ "$critical_vulnerabilities" -ge "$CRITICAL_THRESHOLD" ] || [ "$high_vulnerabilities" -ge "$HIGH_THRESHOLD" ]; then
-            echo "Too many vulnerabilities detected!"
-            exit 1
-          else
-            echo "Vulnerability count is within acceptable limits."
-          fi
-
+      - name: Proceed with Deployment
+        if: needs.call-codeql-analysis.outputs.score >= 75
+        run: |
+          echo "Vulnerability score is acceptable: ${{ needs.call-codeql-analysis.outputs.score }}. Proceeding with deployment."
