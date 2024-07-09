@@ -1,14 +1,27 @@
-    name: CodeQL Analysis
-    on:
-      push:
-        branches:
-        - main
-        - master
-        - develop
-      workflow_dispatch:
-    jobs:
-      analyze_security:
-        uses: Kynetixx/codeql-module/.github/workflows/codeql-analysis.yml@main
-        with:
-          severity_threshold: 'high'
-          score_threshold: 5
+name: CodeQL Analysis
+on:
+  push:
+    branches:
+    - main
+    - master
+    - develop
+    - test/update  
+  workflow_dispatch:
+jobs:
+  codeql-analysis:
+    uses: Kynetixx/codeql-module/.github/workflows/codeql-analysis.yml@main
+  check-vulnerabilities:
+    needs: codeql-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Vulnerability Score
+        id: get-score
+        run: |
+          score=${{ needs.codeql-analysis.outputs.score }}
+          echo "Final vulnerability score: $score"
+          if [ "$score" -lt 75 ]; then
+            echo "Vulnerability score is too low: $score."
+            exit 1
+          else
+            echo "Vulnerability score is acceptable: $score."
+          fi
